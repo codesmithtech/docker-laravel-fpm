@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     vim \
     nano \
+    libpq-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install -j$(nproc) gd pgsql pdo_pgsql pdo
 
 WORKDIR /app

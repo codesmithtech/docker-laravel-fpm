@@ -8,8 +8,9 @@ RUN apt-get update && apt-get install -y \
     vim \
     nano \
     libpq-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd pgsql pdo_pgsql pdo
+    libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg  \
+    && docker-php-ext-install -j$(nproc) gd pcntl pgsql pdo_pgsql pdo zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 

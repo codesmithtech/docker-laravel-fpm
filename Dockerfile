@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg  \
     && docker-php-ext-install -j$(nproc) gd pdo_mysql pcntl pgsql pdo_pgsql pdo zip && \
-    pecl install redis
+    pecl install redis && \
+    echo 'extension=redis.so' > /usr/local/etc/php/conf.d/pecl-redis.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 

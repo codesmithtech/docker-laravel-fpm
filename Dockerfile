@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     nano \
     libpq-dev \
     libzip-dev \
+    procps \
     && docker-php-ext-configure gd --with-freetype --with-jpeg  \
     && docker-php-ext-install -j$(nproc) gd pdo_mysql pcntl pgsql pdo_pgsql pdo zip && \
     pecl install redis && \

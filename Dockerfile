@@ -12,7 +12,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg  \
     && docker-php-ext-install -j$(nproc) gd pdo_mysql pcntl pgsql pdo_pgsql pdo zip && \
     pecl install redis && \
-    echo 'extension=redis.so' > /usr/local/etc/php/conf.d/pecl-redis.ini
+    pecl install swoole && \
+    echo 'extension=redis.so' > /usr/local/etc/php/conf.d/pecl-redis.ini && \
+    echo 'extension=swoole.so' > /usr/local/etc/php/conf.d/pecl-swoole.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 

@@ -18,6 +18,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php8.3-fpm \
         php8.3-bz2 \
         php8.3-curl \
+        php8.3-dom \
         php8.3-gd \
         php8.3-intl \
         php8.3-mbstring \
@@ -25,6 +26,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php8.3-pgsql \
         php8.3-redis \
         php8.3-swoole \
+        php8.3-xml \
         php8.3-zip
 
 RUN ln -s /dev/stderr /var/log/php8.3-fpm.log && \

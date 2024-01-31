@@ -1,22 +1,37 @@
-FROM php:8-fpm
+FROM ubuntu:latest
+
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
-    libfreetype-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    iputils-ping \
-    vim \
-    nano \
-    libpq-dev \
-    libzip-dev \
-    procps \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg  \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql pcntl pgsql pdo_pgsql pdo zip && \
-    pecl install redis && \
-    pecl install swoole && \
-    echo 'extension=redis.so' > /usr/local/etc/php/conf.d/pecl-redis.ini && \
-    echo 'extension=swoole.so' > /usr/local/etc/php/conf.d/pecl-swoole.ini
+        software-properties-common \
+        iputils-ping \
+        vim \
+        nano \
+        procps \
+        nginx && \
+    rm /etc/nginx/sites-enabled/default
+
+RUN add-apt-repository ppa:ondrej/php && \
+    apt-get update && \
+    apt-get install -y \
+        php8.3 \
+        php8.3-fpm \
+        php8.3-bz2 \
+        php8.3-curl \
+        php8.3-gd \
+        php8.3-intl \
+        php8.3-mbstring \
+        php8.3-mysql \
+        php8.3-pgsql \
+        php8.3-redis \
+        php8.3-swoole \
+        php8.3-zip
+
+RUN ln -s /dev/stderr /var/log/php8.3-fpm.log && \
+    rm -f /var/log/nginx/error.log && ln -s /dev/stderr /var/log/nginx/error.log
+
+COPY entrypoint.sh /entrypoint.sh
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-WORKDIR /app
+ENTRYPOINT ["/entrypoint.sh"]

@@ -11,14 +11,16 @@ RUN apt-get update && apt-get install -y \
         nginx && \
     rm /etc/nginx/sites-enabled/default
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     apt-get install -y \
-        php8.3 \
+        libmpdec-dev \
+        php8.3-dev \
         php8.3-fpm \
         php8.3-bz2 \
         php8.3-curl \
-        php8.3-decimal \
         php8.3-dom \
         php8.3-gd \
         php8.3-intl \
@@ -29,6 +31,11 @@ RUN add-apt-repository ppa:ondrej/php && \
         php8.3-swoole \
         php8.3-xml \
         php8.3-zip
+
+RUN pecl install decimal && \
+    echo 'extension=decimal.so' > /etc/php/8.3/mods-available/decmial.ini && \
+    ln -s /etc/php/8.3/mods-available/decmial.ini /etc/php/8.3/cli/conf.d/decmial.ini && \
+    ln -s /etc/php/8.3/mods-available/decmial.ini /etc/php/8.3/fpm/conf.d/decmial.ini
 
 RUN ln -s /dev/stderr /var/log/php8.3-fpm.log && \
     rm -f /var/log/nginx/error.log && ln -s /dev/stderr /var/log/nginx/error.log
